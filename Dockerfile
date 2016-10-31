@@ -68,6 +68,15 @@ RUN sed \
     -i ${NEXUS_HOME}/etc/nexus-default.properties \
   && mkdir -p ${NEXUS_DATA}/etc ${NEXUS_DATA}/log ${NEXUS_DATA}/tmp
 
+# workaround NEXUS-10049 by touching the affected acl.cfg files
+RUN touch \
+    ${NEXUS_HOME}/etc/karaf/org.apache.karaf.command.acl.feature.cfg \
+    ${NEXUS_HOME}/etc/karaf/org.apache.karaf.command.acl.system.cfg \
+    ${NEXUS_HOME}/etc/karaf/org.apache.karaf.command.acl.bundle.cfg \
+    ${NEXUS_HOME}/etc/karaf/org.apache.karaf.command.acl.shell.cfg \
+    ${NEXUS_HOME}/etc/karaf/org.apache.karaf.command.acl.config.cfg \
+    ${NEXUS_HOME}/etc/karaf/org.apache.karaf.command.acl.jaas.cfg
+
 RUN useradd -r -u 200 -m -c "nexus role account" -d ${NEXUS_DATA} -s /bin/false nexus \
   && chown -R nexus:nexus ${NEXUS_DATA}
 
