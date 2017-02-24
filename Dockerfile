@@ -14,7 +14,7 @@
 
 FROM       centos:centos7
 
-MAINTAINER Sonatype <cloud-ops@sonatype.com>
+MAINTAINER zhaolp <zhaoliping0736@foxmail.com>
 
 LABEL vendor=Sonatype \
   com.sonatype.license="Apache License, Version 2.0" \
@@ -70,11 +70,13 @@ RUN useradd -r -u 200 -m -c "nexus role account" -d ${NEXUS_DATA} -s /bin/false 
 VOLUME ${NEXUS_DATA}
 
 EXPOSE 8081
+EXPOSE 8082
+EXPOSE 443
 USER nexus
 WORKDIR ${NEXUS_HOME}
 
 ENV JAVA_MAX_MEM=1200m \
   JAVA_MIN_MEM=1200m \
-  EXTRA_JAVA_OPTS=""
+  EXTRA_JAVA_OPTS="-server"
 
 CMD ["bin/nexus", "run"]
